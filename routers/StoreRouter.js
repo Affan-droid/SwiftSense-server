@@ -93,16 +93,16 @@ router.delete('/deleteStore/:id', auth, async(req, res)=>{
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { sid, password } = req.body;
 
     // validate
 
-    if (!email || !password)
+    if (!sid || !password)
       return res
         .status(400)
         .json({ errorMessage: "Please enter all required fields." });
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ sid });
     if (!existingUser)
       return res.status(401).json({ errorMessage: "Wrong email or password." });
 
@@ -163,9 +163,8 @@ router.get("/loggedIn", (req, res) => {
 
 router.get("/show", auth, async (req, res) => {
   try {
-    //const brand = req.user;
-    //console.log(brand);
-    const stores = await User.find();
+    const id = req.user;
+    const stores = await User.findOne({id});
     res.json(stores); 
   } catch (err) {
     console.error(err);
