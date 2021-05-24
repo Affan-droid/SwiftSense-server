@@ -151,7 +151,7 @@ router.get("/show", async (req, res) => {
 router.get('/name', async(req,res)=>{
   const id = req.user;
   try{
-    const brand = await User.findOne(id);
+    const brand = await User.findById(id);
     res.json(brand);
   }catch(err){
     console.log(err);
