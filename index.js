@@ -20,7 +20,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
-      "https://mern-auth-template-tutorial.netlify.app",
+      "https://60aa191c1fec17f910f0b2cd--stoic-jang-b757cf.netlify.app",
     ],
     credentials: true,
   })
