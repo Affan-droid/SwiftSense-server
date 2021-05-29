@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     const existingUser = await User.findOne({ sid });
     if (existingUser)
       return res.status(400).json({
-        errorMessage: "An account with this email already exists.",
+        errorMessage: "An Store with this id already exists.",
       });
 
     // hash the password
@@ -163,9 +163,20 @@ router.get("/loggedIn", (req, res) => {
 
 router.get("/show", auth, async (req, res) => {
   try {
-    const id = req.user;
-    const stores = await User.findOne({id});
+    const stores = await User.find();
     res.json(stores); 
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+});
+
+router.get("/name", auth,  async (req, res) => {
+  const id = req.user;
+  console.log(id)
+  try {
+    const store = await User.findById(id);
+    res.json(store); 
   } catch (err) {
     console.error(err);
     res.status(500).send();

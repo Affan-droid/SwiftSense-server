@@ -46,3 +46,4 @@ app.use("/auth", require("./routers/userRouter"));
 app.use("/customer", require("./routers/customerRouter"));
 app.use("/store", require("./routers/StoreRouter"));
 app.use("/brand", require("./routers/BrandRouter"));
+app.use("/sales", require("./routers/SalesRouter"));

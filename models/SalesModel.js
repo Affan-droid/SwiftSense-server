@@ -5,8 +5,9 @@ const StoreSalesSchema = new mongoose.Schema({
     sloc:{type:String,required:true},
     bid:{type:Number, required:true},
     sales:{type:Number, required:true},
-    DayOfWeek:{type:Number, required:true},
-    Customers:{type:Number, required:true},
+    day:{type:Number, },
+    customers:{type:Number, required:true},
+    date:{type:Date, }
 })
 // to make collection in database cloud 
 const Sales = mongoose.model("StoreSlaes",StoreSalesSchema);

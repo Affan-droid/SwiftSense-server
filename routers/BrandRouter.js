@@ -2,9 +2,9 @@ const router = require("express").Router();
 const User = require("../models/BrandModels");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 
 // register
-
 router.post("/", async (req, res) => {
   try {
     const {bid,email,password,bname,btype,bowner} = req.body;
@@ -28,7 +28,6 @@ router.post("/", async (req, res) => {
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
-
     // save a new user account to the db
 
     const newUser = new User({
@@ -50,7 +49,7 @@ router.post("/", async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-
+    
     // send the token in a HTTP-only cookie
 
     res
@@ -91,14 +90,13 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ errorMessage: "Wrong email or password." });
 
     // sign the token
-
+    
     const token = jwt.sign(
       {
         user: existingUser._id,
       },
       process.env.JWT_SECRET
     );
-
     // send the token in a HTTP-only cookie
 
     res
@@ -131,7 +129,6 @@ router.get("/loggedIn", (req, res) => {
     if (!token) return res.json(false);
 
     jwt.verify(token, process.env.JWT_SECRET);
-    console.log(req.user);
     res.send(true);
   } catch (err) {
     res.json(false);
@@ -148,10 +145,13 @@ router.get("/show", async (req, res) => {
   }
 });
 
-router.get('/name', auth, async(req,res)=>{
-  const id = req.user;
+router.get('/name', auth,   async(req,res)=>{
+  
+  const brandId = req.user;
+  
   try{
-    const brand = await User.findOne({id});
+    const brand = await User.findById(brandId);
+
     res.json(brand);
   }catch(err){
     console.log(err);
