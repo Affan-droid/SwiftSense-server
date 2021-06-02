@@ -41,24 +41,24 @@ router.post("/", async (req, res) => {
 
     const savedUser = await newUser.save();
 
-    // sign the token
+  //   // sign the token
 
-    const token = jwt.sign(
-      {
-        user: savedUser._id,
-      },
-      process.env.JWT_SECRET
-    );
+  //   const token = jwt.sign(
+  //     {
+  //       user: savedUser._id,
+  //     },
+  //     process.env.JWT_SECRET
+  //   );
     
-    // send the token in a HTTP-only cookie
+  //   // send the token in a HTTP-only cookie
 
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      })
-      .send();
+  //   res
+  //     .cookie("token", token, {
+  //       httpOnly: true,
+  //       secure: true,
+  //       sameSite: "none",
+  //     })
+  //     .send();
   } catch (err) {
     console.error(err);
     res.status(500).send();
@@ -112,7 +112,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", auth,  (req, res) => {
   res
     .cookie("token", "", {
       httpOnly: true,
@@ -127,7 +127,6 @@ router.get("/loggedIn", (req, res) => {
   try {
     const token = req.cookies.token;
     if (!token) return res.json(false);
-
     jwt.verify(token, process.env.JWT_SECRET);
     res.send(true);
   } catch (err) {
@@ -135,7 +134,7 @@ router.get("/loggedIn", (req, res) => {
   }
 });
 
-router.get("/show", async (req, res) => {
+router.get("/show", auth,  async (req, res) => {
   try {
     const brands = await User.find();
     res.json(brands);
@@ -151,7 +150,6 @@ router.get('/name', auth,   async(req,res)=>{
   
   try{
     const brand = await User.findById(brandId);
-
     res.json(brand);
   }catch(err){
     console.log(err);
